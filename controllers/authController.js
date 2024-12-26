@@ -2,7 +2,8 @@ const bcrypt = require('bcryptjs'); // Ensure this is bcryptjs
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const Task = require('../models/task');
-const e = require('cors');
+
+// ...existing code...
 
 /**
  * @desc Register a new user
