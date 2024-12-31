@@ -40,10 +40,7 @@ const MONGO_URI = process.env.MONGO_URI; // MongoDB connection URI from the .env
 
 // Connect to MongoDB using Mongoose
 mongoose
-  .connect('mongodb://127.0.0.1:27017/taskmanagement', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  })
+  .connect('mongodb://127.0.0.1:27017/taskmanagement') // Deprecated options removed
   .then(() => {
     console.log('Successfully connected to MongoDB');
     // Start the server on the specified port
