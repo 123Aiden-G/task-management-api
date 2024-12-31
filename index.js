@@ -35,7 +35,8 @@ app.use('/api/tasks', taskRoutes); // Routes for task management
 app.use(errorHandler);
 
 // Set up environment variables for the server port and MongoDB URI
-const PORT = process.env.PORT; // Use the value in the .env file
+const PORT = process.env.PORT || 3000; // Use the Vercel-assigned port or fallback to 3000
+
 const MONGO_URI = process.env.MONGO_URI; // MongoDB connection URI from the .env file
 
 // Connect to MongoDB using Mongoose
