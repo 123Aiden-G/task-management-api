@@ -36,12 +36,11 @@ app.use(errorHandler);
 
 // Set up environment variables for the server port and MongoDB URI
 const PORT = process.env.PORT || 3000; // Use the Vercel-assigned port or fallback to 3000
-
 const MONGO_URI = process.env.MONGO_URI; // MongoDB connection URI from the .env file
 
 // Connect to MongoDB using Mongoose
 mongoose
-  .connect('mongodb://127.0.0.1:27017/taskmanagement') // Deprecated options removed
+  .connect(MONGO_URI) // Use MONGO_URI from environment
   .then(() => {
     console.log('Successfully connected to MongoDB');
     // Start the server on the specified port
