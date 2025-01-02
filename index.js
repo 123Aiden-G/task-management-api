@@ -20,36 +20,37 @@ requiredEnvVars.forEach((varName) => {
   }
 });
 
+// Set port and MongoDB URI from environment variables or defaults
 const PORT = process.env.PORT || 3000;
 const MONGO_URI = process.env.MONGO_URI;
 
 // Create Express app
 const app = express();
 
-// Middleware setup
+// Middleware setup for JSON parsing and Cross-Origin Resource Sharing (CORS)
 app.use(express.json());
 app.use(cors());
 
-// Register routes
+// Register routes for authentication and task management
 app.use('/api/auth', authRoutes);
 app.use('/api/tasks', taskRoutes);
-app.use(errorHandler);
+app.use(errorHandler); // Global error handling middleware
 
-// MongoDB connection
+// Connect to MongoDB and start the server
 mongoose
   .connect(MONGO_URI)
   .then(() => {
     console.log('Successfully connected to MongoDB');
     
-    // Start the server
+    // Start the server on the specified port
     const server = app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     });
 
-    // Schedule cleanup job
+    // Schedule a cleanup job for periodic maintenance
     cleanupJob();
 
-    // Graceful shutdown
+    // Graceful shutdown for server and database connection
     const shutdown = () => {
       server.close(() => {
         console.log('Server closed');
@@ -67,7 +68,7 @@ mongoose
     process.exit(1);
   });
 
-// Default route
+// Default route for health check or basic response
 app.get('/', (req, res) => {
   res.send('Task Management API is running!');
 });
