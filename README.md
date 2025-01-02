@@ -56,27 +56,27 @@ The server will start on the port specified in the `.env` file (default is 3000)
 
 - **Get all tasks:**
     ```bash
-    curl -X GET http://localhost:3000/api/tasks
+    curl -X GET https://task-management-api-ypwj.onrender.com/api/tasks
     ```
 
 - **Create a new task:**
     ```bash
-    curl -X POST http://localhost:3000/api/tasks -H "Content-Type: application/json" -d '{"title": "New Task", "description": "Task description"}'
+    curl -X POST https://task-management-api-ypwj.onrender.com/api/tasks -H "Content-Type: application/json" -d '{"title": "New Task", "description": "Task description"}'
     ```
 
 - **Get a task by ID:**
     ```bash
-    curl -X GET http://localhost:3000/api/tasks/1
+    curl -X GET https://task-management-api-ypwj.onrender.com/api/tasks/1
     ```
 
 - **Update a task by ID:**
     ```bash
-    curl -X PUT http://localhost:3000/api/tasks/1 -H "Content-Type: application/json" -d '{"title": "Updated Task", "description": "Updated description"}'
+    curl -X PUT https://task-management-api-ypwj.onrender.com/api/tasks/1 -H "Content-Type: application/json" -d '{"title": "Updated Task", "description": "Updated description"}'
     ```
 
 - **Delete a task by ID:**
     ```bash
-    curl -X DELETE http://localhost:3000/api/tasks/1
+    curl -X DELETE https://task-management-api-ypwj.onrender.com/api/tasks/1
     ```
 
 ## Postman Collection
@@ -113,7 +113,4 @@ This folder contains endpoints related to task management.
 
 ## License
 
-<<<<<<< HEAD
 This project is licensed under the MIT License.
-=======
->>>>>>> fa8bba6713ddf5bc846a464598bc54ccf7c6de3b
