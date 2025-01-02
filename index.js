@@ -1,18 +1,18 @@
 // Import necessary modules
-const express = require('express'); // Express framework to build the server
-const mongoose = require('mongoose'); // Mongoose to interact with MongoDB
-const dotenv = require('dotenv'); // dotenv to load environment variables from .env file
-const cors = require('cors'); // CORS middleware for handling cross-origin requests
-const authRoutes = require('./routes/authRoutes'); // Authentication routes
-const taskRoutes = require('./routes/taskRoutes'); // Task management routes
-const errorHandler = require('./middleware/errorHandler'); // Error handling middleware
-const cleanupJob = require('./jobs/cleanupJob'); // Ensure this path is correct
+const express = require('express');
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+const cors = require('cors');
+const authRoutes = require('./routes/authRoutes');
+const taskRoutes = require('./routes/taskRoutes');
+const errorHandler = require('./middleware/errorHandler');
+const cleanupJob = require('./jobs/cleanupJob');
 
-// Load environment variables from the .env file
+// Load environment variables
 dotenv.config();
 
 // Validate required environment variables
-const requiredEnvVars = ['PORT', 'MONGO_URI', 'JWT_SECRET'];
+const requiredEnvVars = ['MONGO_URI', 'JWT_SECRET'];
 requiredEnvVars.forEach((varName) => {
   if (!process.env[varName]) {
     console.error(`Error: Missing required environment variable ${varName}`);
@@ -20,36 +20,34 @@ requiredEnvVars.forEach((varName) => {
   }
 });
 
-// Create an Express application instance
+const PORT = process.env.PORT || 3000;
+const MONGO_URI = process.env.MONGO_URI;
+
+// Create Express app
 const app = express();
 
 // Middleware setup
-app.use(express.json()); // Middleware to parse incoming JSON data
-app.use(cors()); // Middleware to enable Cross-Origin Resource Sharing (CORS)
+app.use(express.json());
+app.use(cors());
 
 // Register routes
-app.use('/api/auth', authRoutes); // Routes for user authentication
-app.use('/api/tasks', taskRoutes); // Routes for task management
-
-// Error handling middleware
+app.use('/api/auth', authRoutes);
+app.use('/api/tasks', taskRoutes);
 app.use(errorHandler);
 
-// Set up environment variables for the server port and MongoDB URI
-const PORT = process.env.PORT || 3000; // Use the Vercel-assigned port or fallback to 3000
-const MONGO_URI = process.env.MONGO_URI; // MongoDB connection URI from the .env file
-
-// Connect to MongoDB using Mongoose
+// MongoDB connection
 mongoose
-  .connect(MONGO_URI) // Use MONGO_URI from environment
+  .connect(MONGO_URI)
   .then(() => {
     console.log('Successfully connected to MongoDB');
-    // Start the server on the specified port
+    
+    // Start the server
     const server = app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     });
 
-    // Schedule the cleanup job
-    cleanupJob(); // Call the cleanup job function
+    // Schedule cleanup job
+    cleanupJob();
 
     // Graceful shutdown
     const shutdown = () => {
@@ -61,17 +59,15 @@ mongoose
         });
       });
     };
-
     process.on('SIGTERM', shutdown);
     process.on('SIGINT', shutdown);
   })
   .catch((err) => {
-    // If an error occurs while connecting to MongoDB, log the error and exit the process
     console.error('Error connecting to MongoDB:', err);
-    process.exit(1); // Exit the process with an error code
+    process.exit(1);
   });
 
-// Default route to confirm that the server is running
+// Default route
 app.get('/', (req, res) => {
-  res.send('Task Management API is running!'); // Basic response for the root URL
+  res.send('Task Management API is running!');
 });
